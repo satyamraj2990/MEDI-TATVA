@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Diagnostics</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+        .diagnostic {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        h2 { color: #666; font-size: 18px; margin-top: 0; }
+        pre {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .test-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        #log {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Chatbot Input Diagnostics</h1>
+    
+    <div class="diagnostic">
+        <h2>1. Test Basic Input</h2>
+        <input type="text" class="test-input" id="basicInput" placeholder="Try typing here...">
+        <div id="basicResult"></div>
+    </div>
+    
+    <div class="diagnostic">
+        <h2>2. Test Input with React-like State</h2>
+        <input type="text" class="test-input" id="stateInput" placeholder="Type to test state updates...">
+        <div>Current Value: <span id="stateValue">""</span></div>
+    </div>
+    
+    <div class="diagnostic">
+        <h2>3. CSS Interference Test</h2>
+        <input type="text" class="test-input" id="cssInput" 
+               style="pointer-events: auto !important; user-select: text !important;"
+               placeholder="Input with explicit CSS...">
+    </div>
+    
+    <div class="diagnostic">
+        <h2>4. Event Listener Test</h2>
+        <button onclick="testEventListeners()">Run Event Tests</button>
+        <div id="eventResults"></div>
+    </div>
+    
+    <div class="diagnostic">
+        <h2>5. Browser Console Copy</h2>
+        <p>Open your chatbot, open browser DevTools (F12), and paste this code:</p>
+        <pre id="debugCode">// Find the chatbot input
+const input = document.querySelector('input[placeholder*="symptoms"]');
+console.log('Chatbot Input Found:', !!input);
+if (input) {
+    console.log('Input properties:', {
+        disabled: input.disabled,
+        readOnly: input.readOnly,
+        value: input.value,
+        style: input.style.cssText,
+        computedStyle: window.getComputedStyle(input).pointerEvents,
+        tabIndex: input.tabIndex,
+        offsetParent: !!input.offsetParent
+    });
+    
+    // Try to force enable
+    input.disabled = false;
+    input.readOnly = false;
+    input.style.pointerEvents = 'auto';
+    input.style.userSelect = 'text';
+    input.focus();
+    console.log('✅ Input force-enabled and focused');
+}</pre>
+        <button onclick="copyDebugCode()">Copy Code</button>
+    </div>
+    
+    <div class="diagnostic">
+        <h2>6. Event Log</h2>
+        <div id="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `[${time}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        function clearLog() {
+            log.innerHTML = '';
+        }
+        
+        // Test 1: Basic Input
+        const basicInput = document.getElementById('basicInput');
+        const basicResult = document.getElementById('basicResult');
+        
+        basicInput.addEventListener('input', (e) => {
+            basicResult.innerHTML = `<span class="success">✓ Input Working! Value: "${e.target.value}"</span>`;
+            addLog(`Basic input: "${e.target.value}"`);
+        });
+        
+        basicInput.addEventListener('focus', () => {
+            addLog('Basic input focused');
+        });
+        
+        // Test 2: State Input
+        const stateInput = document.getElementById('stateInput');
+        const stateValue = document.getElementById('stateValue');
+        let inputValue = '';
+        
+        stateInput.addEventListener('input', (e) => {
+            inputValue = e.target.value;
+            stateValue.textContent = `"${inputValue}"`;
+            addLog(`State input: "${inputValue}"`);
+        });
+        
+        // Test 3: CSS Input
+        const cssInput = document.getElementById('cssInput');
+        cssInput.addEventListener('input', (e) => {
+            addLog(`CSS test input: "${e.target.value}"`);
+        });
+        
+        // Test 4: Event Listeners
+        function testEventListeners() {
+            const results = document.getElementById('eventResults');
+            const testInput = document.createElement('input');
+            testInput.type = 'text';
+            testInput.placeholder = 'Event test input';
+            testInput.className = 'test-input';
+            
+            const tests = [];
+            
+            // Test click
+            testInput.addEventListener('click', () => {
+                tests.push('✓ Click event works');
+                updateResults();
+            });
+            
+            // Test focus
+            testInput.addEventListener('focus', () => {
+                tests.push('✓ Focus event works');
+                updateResults();
+            });
+            
+            // Test input
+            testInput.addEventListener('input', () => {
+                tests.push('✓ Input event works');
+                updateResults();
+            });
+            
+            // Test keydown
+            testInput.addEventListener('keydown', (e) => {
+                tests.push(`✓ Keydown event works: ${e.key}`);
+                updateResults();
+            });
+            
+            function updateResults() {
+                results.innerHTML = '<ul>' + tests.map(t => `<li>${t}</li>`).join('') + '</ul>';
+            }
+            
+            results.innerHTML = '';
+            results.appendChild(testInput);
+            testInput.focus();
+        }
+        
+        function copyDebugCode() {
+            const code = document.getElementById('debugCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✓ Debug code copied! Open browser console (F12) in your chatbot and paste it.');
+            });
+        }
+        
+        // Auto-run diagnostics
+        addLog('Diagnostics page loaded');
+        addLog('Testing basic browser capabilities...');
+        
+        setTimeout(() => {
+            const testEl = document.createElement('input');
+            document.body.appendChild(testEl);
+            testEl.style.position = 'absolute';
+            testEl.style.left = '-9999px';
+            
+            testEl.value = 'test';
+            if (testEl.value === 'test') {
+                addLog('✓ Input value setting works');
+            } else {
+                addLog('✗ Input value setting FAILED', 'error');
+            }
+            
+            document.body.removeChild(testEl);
+        }, 100);
+    </script>
+</body>
+</html>

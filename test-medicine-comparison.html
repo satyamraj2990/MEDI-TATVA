@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Comparison Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .medicine-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .medicine-card:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+        }
+        .medicine-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .selected-medicines {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .medicine-tag {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .medicine-tag button {
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            margin: 0;
+            border-radius: 50%;
+            font-size: 14px;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #efe;
+            border: 2px solid #cfc;
+            color: #3c3;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .info-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .badge-budget {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-balanced {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .badge-premium {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💊 Medicine Comparison Tool</h1>
+        <p class="subtitle">Search and compare two medicines side-by-side</p>
+
+        <div class="info-box">
+            <strong>ℹ️ How to use:</strong>
+            <ol style="margin: 10px 0 0 0; padding-left: 20px;">
+                <li>Search for a medicine by typing in the search box</li>
+                <li>Click on a medicine to select it (select exactly 2)</li>
+                <li>Click "Compare Medicines" to see detailed comparison</li>
+            </ol>
+        </div>
+
+        <!-- Section 1: Search -->
+        <div class="section">
+            <h2>🔍 Search Medicines</h2>
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Type medicine name (e.g., paracetamol, dolo, crocin)"
+                onkeyup="searchMedicines()"
+            />
+            <div id="searchResults" class="results"></div>
+        </div>
+
+        <!-- Section 2: Selected Medicines -->
+        <div class="section">
+            <h2>✅ Selected Medicines (<span id="selectedCount">0</span>/2)</h2>
+            <div id="selectedMedicines" class="selected-medicines">
+                <p style="color: #999;">No medicines selected yet</p>
+            </div>
+            <button id="compareBtn" onclick="compareMedicines()" disabled>
+                🔄 Compare Medicines
+            </button>
+            <button onclick="clearSelection()">🗑️ Clear Selection</button>
+        </div>
+
+        <!-- Section 3: Comparison Results -->
+        <div class="section" id="comparisonSection" style="display: none;">
+            <h2>📊 Comparison Results</h2>
+            <div id="comparisonResults"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        let selectedMedicines = [];
+        let searchTimeout = null;
+
+        async function searchMedicines() {
+            const query = document.getElementById('searchInput').value.trim();
+            const resultsDiv = document.getElementById('searchResults');
+
+            if (query.length < 2) {
+                resultsDiv.innerHTML = '';
+                return;
+            }
+
+            // Debounce search
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                resultsDiv.innerHTML = '<div class="loading">Searching...</div>';
+
+                try {
+                    const response = await fetch(`${API_BASE}/api/medicines/search?q=${encodeURIComponent(query)}`);
+                    const medicines = await response.json();
+
+                    if (medicines.length === 0) {
+                        resultsDiv.innerHTML = '<p style="color: #999;">No medicines found</p>';
+                        return;
+                    }
+
+                    resultsDiv.innerHTML = medicines.map(med => `
+                        <div class="medicine-card" onclick='selectMedicine(${JSON.stringify(med)})'>
+                            <strong>${med.name}</strong>
+                            <div style="color: #666; font-size: 14px; margin-top: 5px;">
+                                <span>💊 ${med.composition1}${med.composition2 ? ' + ' + med.composition2 : ''}</span><br>
+                                <span>🏭 ${med.manufacturer}</span> | 
+                                <span class="price">₹${med.price}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    resultsDiv.innerHTML = `<div class="error">Error searching: ${error.message}</div>`;
+                }
+            }, 300);
+        }
+
+        function selectMedicine(medicine) {
+            // Check if already selected
+            if (selectedMedicines.find(m => m.id === medicine.id)) {
+                alert('This medicine is already selected');
+                return;
+            }
+
+            // Check limit
+            if (selectedMedicines.length >= 2) {
+                alert('You can only select 2 medicines for comparison');
+                return;
+            }
+
+            selectedMedicines.push(medicine);
+            updateSelectedDisplay();
+        }
+
+        function removeMedicine(index) {
+            selectedMedicines.splice(index, 1);
+            updateSelectedDisplay();
+        }
+
+        function updateSelectedDisplay() {
+            const container = document.getElementById('selectedMedicines');
+            const countSpan = document.getElementById('selectedCount');
+            const compareBtn = document.getElementById('compareBtn');
+            const comparisonSection = document.getElementById('comparisonSection');
+
+            countSpan.textContent = selectedMedicines.length;
+            compareBtn.disabled = selectedMedicines.length !== 2;
+
+            if (selectedMedicines.length === 0) {
+                container.innerHTML = '<p style="color: #999;">No medicines selected yet</p>';
+                comparisonSection.style.display = 'none';
+                return;
+            }
+
+            container.innerHTML = selectedMedicines.map((med, idx) => `
+                <div class="medicine-tag">
+                    <span>${med.name} (₹${med.price})</span>
+                    <button onclick="removeMedicine(${idx})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        async function compareMedicines() {
+            if (selectedMedicines.length !== 2) {
+                alert('Please select exactly 2 medicines');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('comparisonResults');
+            const section = document.getElementById('comparisonSection');
+            
+            section.style.display = 'block';
+            resultsDiv.innerHTML = '<div class="loading">Comparing medicines...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/medicines/compare`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        medicines: selectedMedicines.map(m => m.name)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!data.success || !data.medicines) {
+                    resultsDiv.innerHTML = `<div class="error">Failed to compare: ${data.error || 'Unknown error'}</div>`;
+                    return;
+                }
+
+                const [med1, med2] = data.medicines;
+
+                // Determine cost categories
+                const getCostBadge = (price) => {
+                    if (price < 50) return '<span class="badge badge-budget">Budget Friendly</span>';
+                    if (price < 150) return '<span class="badge badge-balanced">Balanced</span>';
+                    return '<span class="badge badge-premium">Premium</span>';
+                };
+
+                const priceDiff = Math.abs(med1.price - med2.price);
+                const priceDiffPercent = ((priceDiff / Math.min(med1.price, med2.price)) * 100).toFixed(1);
+                const cheaper = med1.price < med2.price ? med1.name : med2.name;
+
+                resultsDiv.innerHTML = `
+                    <div class="success">
+                        ✅ Comparison complete! ${cheaper} is ₹${priceDiff.toFixed(2)} (${priceDiffPercent}%) cheaper
+                    </div>
+
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Parameter</th>
+                                <th style="width: 37.5%;">${med1.name}</th>
+                                <th style="width: 37.5%;">${med2.name}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Price</strong></td>
+                                <td><span class="price">₹${med1.price}</span> ${getCostBadge(med1.price)}</td>
+                                <td><span class="price">₹${med2.price}</span> ${getCostBadge(med2.price)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Primary Composition</strong></td>
+                                <td>${med1.composition1 || 'N/A'}</td>
+                                <td>${med2.composition1 || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Secondary Composition</strong></td>
+                                <td>${med1.composition2 || 'None'}</td>
+                                <td>${med2.composition2 || 'None'}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Manufacturer</strong></td>
+                                <td>${med1.manufacturer}</td>
+                                <td>${med2.manufacturer}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pack Size</strong></td>
+                                <td>${med1.packSize}</td>
+                                <td>${med2.packSize}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Type</strong></td>
+                                <td style="text-transform: capitalize;">${med1.type}</td>
+                                <td style="text-transform: capitalize;">${med2.type}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status</strong></td>
+                                <td>${med1.discontinued ? '❌ Discontinued' : '✅ Active'}</td>
+                                <td>${med2.discontinued ? '❌ Discontinued' : '✅ Active'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="info-box" style="margin-top: 20px;">
+                        <strong>⚠️ Medical Disclaimer:</strong> This comparison is for informational purposes only. 
+                        Always consult a qualified healthcare professional before switching medications or starting 
+                        new treatments. Individual patient factors may affect medicine selection.
+                    </div>
+                `;
+
+                // Scroll to results
+                section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        function clearSelection() {
+            selectedMedicines = [];
+            updateSelectedDisplay();
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').innerHTML = '';
+        }
+
+        // Initialize
+        document.getElementById('searchInput').focus();
+    </script>
+</body>
+</html>

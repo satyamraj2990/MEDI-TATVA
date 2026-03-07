@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Analyser API Test - MediTatva</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #ffd93d;
+            color: #666;
+        }
+        
+        .status-success {
+            background: #6bcf7f;
+            color: white;
+        }
+        
+        .status-error {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .result-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .medicine-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .medicine-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+        
+        .medicine-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .medicine-details {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .price-tag {
+            display: inline-block;
+            background: #6bcf7f;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Medicine Analyser API Test Suite</h1>
+            <p>Testing all Medicine Analyser endpoints with live data from 53,720 medicines database</p>
+        </div>
+
+        <!-- Feature 1: Search -->
+        <div class="test-section">
+            <h2>
+                🔍 Feature 1: Medicine Search
+                <span class="status-badge status-pending" id="search-status">Pending</span>
+            </h2>
+            <p style="color: #666; margin-bottom: 15px;">
+                Search medicines by brand name, generic name, or manufacturer
+            </p>
+            <input 
+                type="text" 
+                id="search-query" 
+                placeholder="Type medicine name (e.g., paracetamol, crocin, azithromycin)..."
+                value="paracetamol"
+            />
+            <button onclick="testSearch()">Search Medicines</button>
+            <div id="search-results" class="result-box" style="display: none;"></div>
+        </div>
+
+        <!-- Feature 2: Compare -->
+        <div class="test-section">
+            <h2>
+                📊 Feature 2: Compare Medicines
+                <span class="status-badge status-pending" id="compare-status">Pending</span>
+            </h2>
+            <p style="color: #666; margin-bottom: 15px;">
+                Compare 2-5 medicines side-by-side with detailed information
+            </p>
+            <button onclick="testCompare()">Compare Sample Medicines</button>
+            <div id="compare-results" class="result-box" style="display: none;"></div>
+        </div>
+
+        <!-- Feature 3: Substitutes -->
+        <div class="test-section">
+            <h2>
+                💊 Feature 3: AI Substitute Finder
+                <span class="status-badge status-pending" id="substitute-status">Pending</span>
+            </h2>
+            <p style="color: #666; margin-bottom: 15px;">
+                Find cost-effective substitutes with same active ingredients
+            </p>
+            <button onclick="testSubstitutes()">Find Substitutes</button>
+            <div id="substitute-results" class="result-box" style="display: none;"></div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="test-section">
+            <h2>📈 Database Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-medicines">53,720</div>
+                    <div class="stat-label">Total Medicines</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="api-calls">0</div>
+                    <div class="stat-label">API Calls Made</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="success-rate">0%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api/medicine-analyser';
+        let apiCallCount = 0;
+        let successCount = 0;
+
+        function updateStats() {
+            document.getElementById('api-calls').textContent = apiCallCount;
+            const successRate = apiCallCount > 0 ? Math.round((successCount / apiCallCount) * 100) : 0;
+            document.getElementById('success-rate').textContent = successRate + '%';
+        }
+
+        function updateStatus(section, status, message) {
+            const badge = document.getElementById(`${section}-status`);
+            badge.className = `status-badge status-${status}`;
+            badge.textContent = status === 'success' ? '✅ Working' : status === 'error' ? '❌ Failed' : '⏳ Testing...';
+        }
+
+        async function testSearch() {
+            const query = document.getElementById('search-query').value;
+            const resultsDiv = document.getElementById('search-results');
+            
+            updateStatus('search', 'pending');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = 'Searching...';
+            
+            apiCallCount++;
+            updateStats();
+
+            try {
+                const response = await fetch(`${API_BASE}/search-medicines?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    successCount++;
+                    updateStatus('search', 'success');
+                    
+                    let html = `<div style="color: #6bcf7f; font-weight: 600; margin-bottom: 15px;">
+                        ✅ Found ${data.count} medicines
+                    </div>`;
+                    
+                    data.medicines.slice(0, 10).forEach(med => {
+                        html += `
+                        <div class="medicine-card">
+                            <div class="medicine-name">${med.name}</div>
+                            <div class="medicine-details">
+                                <strong>Generic:</strong> ${med.genericName || 'N/A'}<br>
+                                <strong>Manufacturer:</strong> ${med.manufacturer || 'N/A'}<br>
+                                <strong>Form:</strong> ${med.form || 'N/A'}<br>
+                                <strong>Price:</strong> <span class="price-tag">₹${med.price}</span>
+                            </div>
+                        </div>`;
+                    });
+                    
+                    resultsDiv.innerHTML = html;
+                } else {
+                    updateStatus('search', 'error');
+                    resultsDiv.innerHTML = `<div style="color: #ff6b6b;">❌ Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                updateStatus('search', 'error');
+                resultsDiv.innerHTML = `<div style="color: #ff6b6b;">❌ Error: ${error.message}</div>`;
+            }
+            
+            updateStats();
+        }
+
+        async function testCompare() {
+            const resultsDiv = document.getElementById('compare-results');
+            
+            updateStatus('compare', 'pending');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = 'Comparing medicines...';
+            
+            apiCallCount++;
+            updateStats();
+
+            try {
+                // First, search for some medicines to compare
+                const searchResponse = await fetch(`${API_BASE}/search-medicines?q=crocin`);
+                const searchData = await searchResponse.json();
+
+                if (!searchData.success || searchData.medicines.length < 2) {
+                    throw new Error('Not enough medicines found for comparison');
+                }
+
+                const medicineIds = searchData.medicines.slice(0, 3).map(m => m.id);
+
+                // Now compare them
+                const compareResponse = await fetch(`${API_BASE}/compare`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ medicineIds })
+                });
+
+                const data = await compareResponse.json();
+
+                if (data.success) {
+                    successCount++;
+                    updateStatus('compare', 'success');
+                    
+                    let html = `<div style="color: #6bcf7f; font-weight: 600; margin-bottom: 15px;">
+                        ✅ Comparing ${data.comparison.length} medicines
+                    </div>`;
+                    html += `<div style="margin-bottom: 15px;">
+                        <strong>Price Range:</strong> ₹${data.summary.priceRange.min} - ₹${data.summary.priceRange.max}<br>
+                        <strong>Budget Option:</strong> ${data.summary.budgetOption}<br>
+                        <strong>Premium Option:</strong> ${data.summary.premiumOption}
+                    </div>`;
+                    
+                    data.comparison.forEach(med => {
+                        html += `
+                        <div class="medicine-card">
+                            <div class="medicine-name">${med.brandName} - <span class="price-tag">₹${med.price}</span></div>
+                            <div class="medicine-details">
+                                <strong>Generic:</strong> ${med.genericName}<br>
+                                <strong>Strength:</strong> ${med.strength}<br>
+                                <strong>Form:</strong> ${med.dosageForm}<br>
+                                <strong>Manufacturer:</strong> ${med.manufacturer}<br>
+                                <strong>Cost Tag:</strong> ${med.costTag}
+                            </div>
+                        </div>`;
+                    });
+                    
+                    resultsDiv.innerHTML = html;
+                } else {
+                    updateStatus('compare', 'error');
+                    resultsDiv.innerHTML = `<div style="color: #ff6b6b;">❌ Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                updateStatus('compare', 'error');
+                resultsDiv.innerHTML = `<div style="color: #ff6b6b;">❌ Error: ${error.message}</div>`;
+            }
+            
+            updateStats();
+        }
+
+        async function testSubstitutes() {
+            const resultsDiv = document.getElementById('substitute-results');
+            
+            updateStatus('substitute', 'pending');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = 'Finding substitutes...';
+            
+            apiCallCount++;
+            updateStats();
+
+            try {
+                // First, search for a medicine
+                const searchResponse = await fetch(`${API_BASE}/search-medicines?q=azithromycin`);
+                const searchData = await searchResponse.json();
+
+                if (!searchData.success || searchData.medicines.length === 0) {
+                    throw new Error('No medicine found to find substitutes for');
+                }
+
+                const medicineId = searchData.medicines[0].id;
+
+                // Now find substitutes
+                const substituteResponse = await fetch(`${API_BASE}/find-substitutes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ medicineId, matchBy: 'both' })
+                });
+
+                const data = await substituteResponse.json();
+
+                if (data.success) {
+                    successCount++;
+                    updateStatus('substitute', 'success');
+                    
+                    let html = `<div style="color: #6bcf7f; font-weight: 600; margin-bottom: 15px;">
+                        ✅ Found substitutes for ${data.primary.brandName}
+                    </div>`;
+                    html += `<div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #667eea;">
+                        <div class="medicine-name">Primary Medicine: ${data.primary.brandName}</div>
+                        <div class="medicine-details">
+                            <strong>Generic:</strong> ${data.primary.genericName}<br>
+                            <strong>Price:</strong> <span class="price-tag">₹${data.primary.price}</span>
+                        </div>
+                    </div>`;
+                    
+                    html += `<div style="margin-bottom: 10px; font-weight: 600;">Exact Matches (Same Active Ingredient):</div>`;
+                    const exactMatches = data.substitutes.exact.slice(0, 5);
+                    if (exactMatches.length > 0) {
+                        exactMatches.forEach(sub => {
+                            html += `
+                            <div class="medicine-card">
+                                <div class="medicine-name">${sub.brandName} - <span class="price-tag">₹${sub.price}</span></div>
+                                <div class="medicine-details">
+                                    <strong>Savings:</strong> ${sub.savings}% cheaper<br>
+                                    <strong>Reason:</strong> ${sub.matchReason}<br>
+                                    <strong>Manufacturer:</strong> ${sub.manufacturer}
+                                </div>
+                            </div>`;
+                        });
+                    } else {
+                        html += `<div style="color: #999; padding: 10px;">No exact matches found</div>`;
+                    }
+                    
+                    resultsDiv.innerHTML = html;
+                } else {
+                    updateStatus('substitute', 'error');
+                    resultsDiv.innerHTML = `<div style="color: #ff6b6b;">❌ Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                updateStatus('substitute', 'error');
+                resultsDiv.innerHTML = `<div style="color: #ff6b6b;">❌ Error: ${error.message}</div>`;
+            }
+            
+            updateStats();
+        }
+
+        // Auto-run search on page load
+        window.addEventListener('load', () => {
+            setTimeout(testSearch, 500);
+        });
+    </script>
+</body>
+</html>

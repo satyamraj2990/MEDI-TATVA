@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Diagnostic - MediTatva</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        h2 {
+            color: #333;
+            margin: 30px 0 15px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .status-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .success { border-left-color: #10b981; background: #ecfdf5; }
+        .warning { border-left-color: #f59e0b; background: #fffbeb; }
+        .error { border-left-color: #ef4444; background: #fef2f2; }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .label { font-weight: 600; color: #374151; }
+        .value { color: #6b7280; font-family: monospace; }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .log {
+            background: #1f2937;
+            color: #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid transparent;
+        }
+        .log-entry.success { border-left-color: #10b981; }
+        .log-entry.error { border-left-color: #ef4444; color: #fca5a5; }
+        .log-entry.warning { border-left-color: #f59e0b; color: #fde68a; }
+        .log-entry.info { border-left-color: #3b82f6; color: #93c5fd; }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #dc2626;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .badge.good { background: #d1fae5; color: #065f46; }
+        .badge.bad { background: #fee2e2; color: #991b1b; }
+        .badge.unknown { background: #e5e7eb; color: #374151; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Geolocation Diagnostic Tool</h1>
+        <p style="color: #6b7280; margin-bottom: 30px;">Complete diagnostic for location detection issues</p>
+
+        <h2>1️⃣ Environment Check</h2>
+        <div id="env-check" class="status-box">
+            <div class="info-row">
+                <span class="label">Protocol:</span>
+                <span class="value" id="protocol">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">HTTPS Required:</span>
+                <span class="value" id="https-status">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Geolocation API:</span>
+                <span class="value" id="geo-api">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">User Agent:</span>
+                <span class="value" id="user-agent">-</span>
+            </div>
+        </div>
+
+        <h2>2️⃣ Permission Check</h2>
+        <div id="permission-check" class="status-box">
+            <div class="info-row">
+                <span class="label">Permission State:</span>
+                <span class="value" id="permission-state">-</span>
+            </div>
+        </div>
+        <button onclick="checkPermission()">Check Permission</button>
+        <button onclick="requestPermission()">Request Permission</button>
+
+        <h2>3️⃣ GPS Test (High Accuracy)</h2>
+        <div id="gps-status" class="status-box">
+            <p>Click the button below to test GPS with <code>enableHighAccuracy: true</code></p>
+        </div>
+        <button onclick="testGPS()" id="gps-btn">🛰️ Test GPS Location</button>
+        <button onclick="testWatch()" id="watch-btn">🔄 Test Watch Position</button>
+        <button onclick="stopWatch()" id="stop-watch-btn" disabled>🛑 Stop Watch</button>
+
+        <h2>4️⃣ Location Results</h2>
+        <div id="location-results" class="status-box">
+            <p style="color: #6b7280;">No location data yet. Click "Test GPS Location" above.</p>
+        </div>
+
+        <h2>5️⃣ API Key Test</h2>
+        <div class="status-box">
+            <p><strong>Google Geocoding API Key:</strong> <code>AIzaSyBNNB_456wwnLo57BSO89POATwS1FjsMjw</code></p>
+            <p style="margin-top: 10px; color: #6b7280;">
+                ⚠️ Verify in <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console</a>:
+            </p>
+            <ul style="margin: 10px 0 0 30px; color: #6b7280;">
+                <li>Geolocation API is enabled</li>
+                <li>Maps JavaScript API is enabled</li>
+                <li>Geocoding API is enabled</li>
+                <li>API key has correct HTTP referrers</li>
+                <li>Billing is active</li>
+            </ul>
+        </div>
+
+        <h2>6️⃣ Console Log</h2>
+        <div id="log" class="log"></div>
+
+        <button onclick="clearLog()" style="margin-top: 20px; background: #6b7280;">Clear Log</button>
+        <button onclick="window.location.href='/#/patient'" style="background: #10b981;">Go to Patient Dashboard</button>
+    </div>
+
+    <script>
+        let watchId = null;
+        const log = document.getElementById('log');
+
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            console.log(message);
+        }
+
+        function clearLog() {
+            log.innerHTML = '';
+        }
+
+        // 1. Environment Check
+        function checkEnvironment() {
+            const protocol = window.location.protocol;
+            const isSecure = protocol === 'https:' || window.location.hostname === 'localhost';
+            const hasGeo = 'geolocation' in navigator;
+
+            document.getElementById('protocol').textContent = protocol;
+            document.getElementById('https-status').innerHTML = isSecure 
+                ? '<span class="badge good">✓ Secure</span>' 
+                : '<span class="badge bad">✗ Insecure - Location blocked!</span>';
+            document.getElementById('geo-api').innerHTML = hasGeo 
+                ? '<span class="badge good">✓ Supported</span>' 
+                : '<span class="badge bad">✗ Not Supported</span>';
+            document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 80) + '...';
+
+            const envBox = document.getElementById('env-check');
+            envBox.className = isSecure && hasGeo ? 'status-box success' : 'status-box error';
+
+            addLog(`Environment: ${isSecure && hasGeo ? 'PASS' : 'FAIL'}`, isSecure && hasGeo ? 'success' : 'error');
+        }
+
+        // 2. Permission Check
+        async function checkPermission() {
+            if (!navigator.permissions) {
+                addLog('Permissions API not supported', 'warning');
+                return;
+            }
+
+            try {
+                const result = await navigator.permissions.query({ name: 'geolocation' });
+                document.getElementById('permission-state').innerHTML = 
+                    `<span class="badge ${result.state === 'granted' ? 'good' : result.state === 'denied' ? 'bad' : 'unknown'}">${result.state.toUpperCase()}</span>`;
+                
+                addLog(`Permission state: ${result.state}`, result.state === 'granted' ? 'success' : result.state === 'denied' ? 'error' : 'warning');
+
+                result.addEventListener('change', () => {
+                    addLog(`Permission changed to: ${result.state}`, result.state === 'granted' ? 'success' : 'warning');
+                });
+            } catch (error) {
+                addLog(`Permission check error: ${error.message}`, 'error');
+            }
+        }
+
+        function requestPermission() {
+            addLog('Requesting location permission...', 'info');
+            navigator.geolocation.getCurrentPosition(
+                () => {
+                    addLog('✅ Permission GRANTED!', 'success');
+                    checkPermission();
+                },
+                (error) => {
+                    addLog(`❌ Permission error: ${error.message} (Code: ${error.code})`, 'error');
+                }
+            );
+        }
+
+        // 3. GPS Test
+        function testGPS() {
+            addLog('🛰️ Testing GPS with enableHighAccuracy: true...', 'info');
+            document.getElementById('gps-btn').disabled = true;
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 30000,
+                maximumAge: 0
+            };
+
+            addLog(`Options: ${JSON.stringify(options)}`, 'info');
+
+            const startTime = Date.now();
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const elapsed = Date.now() - startTime;
+                    addLog(`✅ GPS SUCCESS in ${elapsed}ms`, 'success');
+                    displayLocation(position);
+                    document.getElementById('gps-btn').disabled = false;
+                },
+                (error) => {
+                    const elapsed = Date.now() - startTime;
+                    addLog(`❌ GPS FAILED after ${elapsed}ms`, 'error');
+                    addLog(`Error Code: ${error.code}`, 'error');
+                    addLog(`Error Message: ${error.message}`, 'error');
+                    
+                    if (error.code === 1) addLog('PERMISSION_DENIED - User blocked location', 'error');
+                    if (error.code === 2) addLog('POSITION_UNAVAILABLE - GPS/Network unavailable', 'error');
+                    if (error.code === 3) addLog('TIMEOUT - Request took too long', 'error');
+                    
+                    document.getElementById('gps-btn').disabled = false;
+                },
+                options
+            );
+        }
+
+        // Watch Position Test
+        function testWatch() {
+            if (watchId !== null) {
+                addLog('⚠️ Already watching position', 'warning');
+                return;
+            }
+
+            addLog('🔄 Starting watchPosition()...', 'info');
+            document.getElementById('watch-btn').disabled = true;
+            document.getElementById('stop-watch-btn').disabled = false;
+
+            let updateCount = 0;
+
+            watchId = navigator.geolocation.watchPosition(
+                (position) => {
+                    updateCount++;
+                    addLog(`🔄 Watch update #${updateCount}`, 'success');
+                    displayLocation(position);
+                },
+                (error) => {
+                    addLog(`❌ Watch error: ${error.message}`, 'error');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 30000,
+                    maximumAge: 0
+                }
+            );
+
+            addLog(`Watch ID: ${watchId}`, 'info');
+        }
+
+        function stopWatch() {
+            if (watchId === null) {
+                addLog('⚠️ No active watch', 'warning');
+                return;
+            }
+
+            navigator.geolocation.clearWatch(watchId);
+            addLog(`🛑 Stopped watch ID: ${watchId}`, 'info');
+            watchId = null;
+            document.getElementById('watch-btn').disabled = false;
+            document.getElementById('stop-watch-btn').disabled = true;
+        }
+
+        // Display Location
+        function displayLocation(position) {
+            const { latitude, longitude, accuracy, altitude, speed, heading } = position.coords;
+            const timestamp = new Date(position.timestamp).toLocaleString();
+
+            const html = `
+                <div class="info-row"><span class="label">Latitude:</span><span class="value">${latitude.toFixed(6)}</span></div>
+                <div class="info-row"><span class="label">Longitude:</span><span class="value">${longitude.toFixed(6)}</span></div>
+                <div class="info-row"><span class="label">Accuracy:</span><span class="value">±${Math.round(accuracy)} meters</span></div>
+                <div class="info-row"><span class="label">Altitude:</span><span class="value">${altitude !== null ? altitude + ' m' : 'N/A'}</span></div>
+                <div class="info-row"><span class="label">Speed:</span><span class="value">${speed !== null ? speed + ' m/s' : 'N/A'}</span></div>
+                <div class="info-row"><span class="label">Heading:</span><span class="value">${heading !== null ? heading + '°' : 'N/A'}</span></div>
+                <div class="info-row"><span class="label">Timestamp:</span><span class="value">${timestamp}</span></div>
+                <div style="margin-top: 15px;">
+                    <a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank" 
+                       style="color: #667eea; text-decoration: none; font-weight: 600;">
+                        📍 View on Google Maps →
+                    </a>
+                </div>
+            `;
+
+            const resultsBox = document.getElementById('location-results');
+            resultsBox.innerHTML = html;
+            resultsBox.className = accuracy < 100 ? 'status-box success' : accuracy < 1000 ? 'status-box warning' : 'status-box error';
+
+            addLog(`📍 Location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)} (±${Math.round(accuracy)}m)`, 'success');
+
+            if (accuracy > 100) {
+                addLog(`⚠️ Accuracy is ${Math.round(accuracy)}m - may be inaccurate!`, 'warning');
+            }
+        }
+
+        // Initialize on load
+        checkEnvironment();
+        checkPermission();
+        addLog('Diagnostic tool loaded', 'success');
+    </script>
+</body>
+</html>

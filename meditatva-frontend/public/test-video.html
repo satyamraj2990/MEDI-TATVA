@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        video {
+            width: 100%;
+            max-width: 800px;
+            display: block;
+            margin: 20px auto;
+            border: 2px solid #0ff;
+        }
+        .info {
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>Video Test Page</h1>
+        <p id="status">Loading video...</p>
+    </div>
+    
+    <video 
+        id="testVideo"
+        controls 
+        autoplay 
+        muted 
+        loop 
+        playsinline
+    >
+        <source src="/healthcare-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const status = document.getElementById('status');
+        
+        video.addEventListener('loadeddata', () => {
+            status.textContent = '✅ Video loaded successfully! Duration: ' + video.duration + 's';
+            status.style.color = '#0f0';
+        });
+        
+        video.addEventListener('error', (e) => {
+            status.textContent = '❌ Video failed to load. Error: ' + e.message;
+            status.style.color = '#f00';
+            console.error('Video error:', e);
+            console.error('Video src:', video.currentSrc);
+        });
+        
+        // Check if file exists
+        fetch('/healthcare-video.mp4', { method: 'HEAD' })
+            .then(response => {
+                console.log('Video file status:', response.status);
+                console.log('Content-Type:', response.headers.get('content-type'));
+                console.log('Content-Length:', response.headers.get('content-length'));
+            })
+            .catch(err => {
+                console.error('Fetch error:', err);
+                status.textContent = '❌ Cannot access video file: ' + err.message;
+                status.style.color = '#f00';
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+MEDISAARTHI CURRENT SESSION CONFIGURATION
+Generated: Fri Mar  6 17:09:09 UTC 2026
+
+NGROK PUBLIC URL: https://simperingly-unconniving-derek.ngrok-free.dev
+TWILIO WEBHOOK: https://simperingly-unconniving-derek.ngrok-free.dev/api/voice-call/handle-call
+BACKEND PID: 32996
+NGROK PID: 32936
+
+TWILIO CONFIGURATION:
+  Account SID: your_twilio_account_sid_here
+  Phone Number: your_twilio_phone_number_here
+  
+ENDPOINTS:
+  Health: http://localhost:5000/api/health
+  Voice Call: https://simperingly-unconniving-derek.ngrok-free.dev/api/voice-call/handle-call
+  Process Speech: https://simperingly-unconniving-derek.ngrok-free.dev/api/voice-call/process-speech
+  
+LOGS:
+  Backend: /tmp/backend.log
+  Ngrok: /tmp/ngrok.log
+  
+TESTING:
+  1. Call +18136869485
+  2. Speak your symptom in Hindi/English
+  3. Receive detailed medical guidance
+  
+STATUS: OPERATIONAL

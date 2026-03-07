@@ -1,0 +1,199 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+/F2 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+>>
+endobj
+
+4 0 obj
+<<
+/Length 1200
+>>
+stream
+BT
+/F1 24 Tf
+50 750 Td
+(MEDICAL PRESCRIPTION) Tj
+ET
+
+BT
+/F2 12 Tf
+50 720 Td
+(This is a mock prescription for testing purposes only) Tj
+ET
+
+BT
+/F1 14 Tf
+50 680 Td
+(Dr. Rajesh Kumar, MBBS, MD) Tj
+ET
+
+BT
+/F2 11 Tf
+50 665 Td
+(Reg. No.: MED-12345-INDIA) Tj
+ET
+
+BT
+/F2 11 Tf
+50 650 Td
+(Clinic: MediTatva Health Center) Tj
+ET
+
+BT
+/F2 11 Tf
+50 635 Td
+(Address: Sector 17, Chandigarh - 160017) Tj
+ET
+
+BT
+/F2 11 Tf
+50 620 Td
+(Phone: +91-98765-43210) Tj
+ET
+
+BT
+/F1 12 Tf
+50 585 Td
+(Patient Information:) Tj
+ET
+
+BT
+/F2 11 Tf
+50 565 Td
+(Name: [Patient Name]) Tj
+ET
+
+BT
+/F2 11 Tf
+50 550 Td
+(Age: [Patient Age] years) Tj
+ET
+
+BT
+/F2 11 Tf
+50 535 Td
+(Date: November 8, 2025) Tj
+ET
+
+BT
+/F1 12 Tf
+50 500 Td
+(Rx - Prescription:) Tj
+ET
+
+BT
+/F2 11 Tf
+60 475 Td
+(1. Paracetamol 500mg - Take 1 tablet twice daily after meals) Tj
+ET
+
+BT
+/F2 11 Tf
+60 460 Td
+(2. Amoxicillin 500mg - Take 1 capsule thrice daily for 5 days) Tj
+ET
+
+BT
+/F2 11 Tf
+60 445 Td
+(3. Vitamin D3 - Take 1 tablet once daily) Tj
+ET
+
+BT
+/F1 12 Tf
+50 410 Td
+(Instructions:) Tj
+ET
+
+BT
+/F2 11 Tf
+60 385 Td
+(- Take medicines as prescribed) Tj
+ET
+
+BT
+/F2 11 Tf
+60 370 Td
+(- Complete the full course of antibiotics) Tj
+ET
+
+BT
+/F2 11 Tf
+60 355 Td
+(- Avoid alcohol during medication) Tj
+ET
+
+BT
+/F2 11 Tf
+60 340 Td
+(- Follow-up after 7 days if symptoms persist) Tj
+ET
+
+BT
+/F1 10 Tf
+50 280 Td
+(Doctor's Signature: ________________________) Tj
+ET
+
+BT
+/F2 9 Tf
+50 100 Td
+(NOTE: This is a mock prescription created for testing purposes.) Tj
+ET
+
+BT
+/F2 9 Tf
+50 85 Td
+(Not valid for actual medical use. For MediTatva system demonstration only.) Tj
+ET
+endstream
+endobj
+
+xref
+0 5
+0000000000 65535 f
+0000000009 00000 n
+0000000058 00000 n
+0000000115 00000 n
+0000000364 00000 n
+trailer
+<<
+/Size 5
+/Root 1 0 R
+>>
+startxref
+1614
+%%EOF

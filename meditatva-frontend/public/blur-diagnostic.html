@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blur Diagnostic Tool</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+        button {
+            background: #00ff00;
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #00cc00;
+        }
+        .output {
+            background: #2a2a2a;
+            padding: 20px;
+            border: 2px solid #00ff00;
+            margin-top: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .element-info {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 3px solid #ff0000;
+            background: #333;
+        }
+        .has-blur {
+            border-left-color: #ff0000;
+            background: #440000;
+        }
+        h1, h2 {
+            color: #00ff00;
+        }
+        .warning {
+            color: #ffff00;
+            font-weight: bold;
+        }
+        .critical {
+            color: #ff0000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 BLUR DIAGNOSTIC TOOL</h1>
+    <p>This tool will scan the current page for ANY element with blur effects.</p>
+    
+    <div>
+        <button onclick="scanForBlur()">🔍 Scan for Blur</button>
+        <button onclick="removeAllBlur()">🗑️ Remove ALL Blur</button>
+        <button onclick="highlightBlurred()">✨ Highlight Blurred Elements</button>
+        <button onclick="goToDashboard()">➡️ Go to Dashboard</button>
+    </div>
+    
+    <div class="output" id="output"></div>
+
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = type === 'critical' ? 'critical' : type === 'warning' ? 'warning' : '';
+            div.textContent = message;
+            output.appendChild(div);
+        }
+
+        function scanForBlur() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<h2>SCANNING...</h2>';
+            
+            log('Starting blur detection scan...', 'info');
+            
+            const allElements = document.querySelectorAll('*');
+            log(`Total elements to scan: ${allElements.length}`, 'info');
+            
+            let foundCount = 0;
+            const blurredElements = [];
+            
+            allElements.forEach((el, index) => {
+                const computed = window.getComputedStyle(el);
+                const filter = computed.filter;
+                const backdropFilter = computed.backdropFilter || computed.webkitBackdropFilter;
+                
+                const hasBlur = 
+                    (filter && filter !== 'none' && filter.includes('blur')) ||
+                    (backdropFilter && backdropFilter !== 'none' && backdropFilter.includes('blur'));
+                
+                if (hasBlur) {
+                    foundCount++;
+                    blurredElements.push({
+                        element: el,
+                        tagName: el.tagName,
+                        className: el.className,
+                        id: el.id,
+                        filter: filter,
+                        backdropFilter: backdropFilter
+                    });
+                    
+                    const info = document.createElement('div');
+                    info.className = 'element-info has-blur';
+                    info.innerHTML = `
+                        <strong class="critical">BLUR FOUND #${foundCount}</strong><br>
+                        Tag: ${el.tagName}<br>
+                        Class: ${el.className || '(none)'}<br>
+                        ID: ${el.id || '(none)'}<br>
+                        filter: ${filter}<br>
+                        backdrop-filter: ${backdropFilter || '(none)'}<br>
+                        ---
+                    `;
+                    output.appendChild(info);
+                }
+            });
+            
+            if (foundCount === 0) {
+                log('✅ NO BLUR FOUND! All elements are clean.', 'info');
+            } else {
+                log(`❌ FOUND ${foundCount} ELEMENTS WITH BLUR!`, 'critical');
+            }
+            
+            return blurredElements;
+        }
+
+        function removeAllBlur() {
+            log('🗑️ REMOVING ALL BLUR...', 'warning');
+            
+            const allElements = document.querySelectorAll('*');
+            let removedCount = 0;
+            
+            allElements.forEach(el => {
+                const computed = window.getComputedStyle(el);
+                const filter = computed.filter;
+                const backdropFilter = computed.backdropFilter || computed.webkitBackdropFilter;
+                
+                const hasBlur = 
+                    (filter && filter !== 'none' && filter.includes('blur')) ||
+                    (backdropFilter && backdropFilter !== 'none' && backdropFilter.includes('blur'));
+                
+                if (hasBlur) {
+                    el.style.filter = 'none !important';
+                    el.style.backdropFilter = 'none !important';
+                    el.style.webkitBackdropFilter = 'none !important';
+                    removedCount++;
+                    log(`Removed blur from: ${el.tagName}.${el.className || '(no-class)'}`, 'info');
+                }
+            });
+            
+            // Also inject a style tag to override everything
+            const style = document.createElement('style');
+            style.textContent = `
+                * {
+                    filter: none !important;
+                    backdrop-filter: none !important;
+                    -webkit-backdrop-filter: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            log(`✅ REMOVED BLUR FROM ${removedCount} ELEMENTS`, 'info');
+            log('✅ INJECTED GLOBAL OVERRIDE STYLE', 'info');
+        }
+
+        function highlightBlurred() {
+            log('✨ HIGHLIGHTING BLURRED ELEMENTS...', 'warning');
+            
+            const blurred = scanForBlur();
+            
+            blurred.forEach((item, index) => {
+                item.element.style.outline = '5px solid red';
+                item.element.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+                item.element.setAttribute('data-blur-index', index + 1);
+                
+                // Add a label
+                const label = document.createElement('div');
+                label.style.cssText = `
+                    position: absolute;
+                    background: red;
+                    color: white;
+                    padding: 5px 10px;
+                    font-weight: bold;
+                    z-index: 999999;
+                    font-size: 12px;
+                `;
+                label.textContent = `BLUR #${index + 1}`;
+                item.element.style.position = 'relative';
+                item.element.insertBefore(label, item.element.firstChild);
+            });
+        }
+
+        function goToDashboard() {
+            window.location.href = '/pharmacy/dashboard/order-requests';
+        }
+
+        // Auto-scan when loaded as embedded diagnostic
+        if (window.location.hash === '#auto-scan') {
+            setTimeout(scanForBlur, 1000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Location Cache - MediTatva</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .success {
+            background: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        .info {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        h1 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Clear Location Cache</h1>
+        
+        <div class="info">
+            <h3>📍 Current Cached Locations:</h3>
+            <div id="cache-status"></div>
+        </div>
+
+        <button onclick="clearCache()">🗑️ Clear Location Cache</button>
+        <button onclick="window.location.href='/#/patient'">👤 Go to Patient Dashboard</button>
+        <button onclick="window.location.href='/#/pharmacy'">💊 Go to Pharmacy Dashboard</button>
+        
+        <div id="success" class="success">
+            ✅ Cache cleared! Your location will be freshly detected.
+        </div>
+
+        <div class="info" style="margin-top: 30px;">
+            <h3>ℹ️ What this does:</h3>
+            <ul>
+                <li>Clears stored <code>patientLocation</code></li>
+                <li>Clears stored <code>pharmacyLocation</code></li>
+                <li>Forces fresh GPS detection on next visit</li>
+                <li>Gets your ACTUAL current location</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function displayCacheStatus() {
+            const patient = sessionStorage.getItem('patientLocation');
+            const pharmacy = sessionStorage.getItem('pharmacyLocation');
+            
+            let html = '';
+            
+            if (patient) {
+                const data = JSON.parse(patient);
+                html += `<p><strong>Patient:</strong> ${data.city || 'Unknown'}, ${data.state || 'Unknown'}</p>`;
+            } else {
+                html += '<p><strong>Patient:</strong> No cache</p>';
+            }
+            
+            if (pharmacy) {
+                const data = JSON.parse(pharmacy);
+                html += `<p><strong>Pharmacy:</strong> ${data.city || 'Unknown'}, ${data.state || 'Unknown'}</p>`;
+            } else {
+                html += '<p><strong>Pharmacy:</strong> No cache</p>';
+            }
+            
+            document.getElementById('cache-status').innerHTML = html;
+        }
+
+        function clearCache() {
+            sessionStorage.removeItem('patientLocation');
+            sessionStorage.removeItem('pharmacyLocation');
+            document.getElementById('success').style.display = 'block';
+            displayCacheStatus();
+            setTimeout(() => {
+                document.getElementById('success').style.display = 'none';
+            }, 3000);
+        }
+
+        // Display status on load
+        displayCacheStatus();
+    </script>
+</body>
+</html>

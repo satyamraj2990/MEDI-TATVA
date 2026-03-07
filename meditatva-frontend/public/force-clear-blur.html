@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Clear Blur - MediTatva</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #1a1a1a;
+            margin-top: 0;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .danger {
+            background: #ef4444;
+        }
+        .danger:hover {
+            background: #dc2626;
+        }
+        .success {
+            background: #10b981;
+        }
+        .success:hover {
+            background: #059669;
+        }
+        .log {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-item {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🛠️ Force Clear Blur Fix</h1>
+        <p><strong>This page will aggressively clear all caches and force reload the dashboard.</strong></p>
+        
+        <div class="warning">
+            ⚠️ <strong>IMPORTANT:</strong> After clicking "Nuclear Clear", you will be redirected to the pharmacy dashboard. 
+            Make sure you're logged in as pharmacy user first!
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Step 1: Clear Everything</h3>
+            <button onclick="clearEverything()" class="danger">🔥 Nuclear Clear (Recommended)</button>
+            <button onclick="clearCaches()">Clear Caches</button>
+            <button onclick="clearStorage()">Clear Storage</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Step 2: Go to Dashboard</h3>
+            <button onclick="goToDashboard()" class="success">Open Pharmacy Dashboard</button>
+            <button onclick="goToDashboardNewTab()">Open in New Tab</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Browser Info</h3>
+            <button onclick="showBrowserInfo()">Show Browser Details</button>
+        </div>
+        
+        <div class="log" id="log" style="display: none;">
+            <strong>Action Log:</strong>
+            <div id="logContent"></div>
+        </div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const logContent = document.getElementById('logContent');
+            logDiv.style.display = 'block';
+            const item = document.createElement('div');
+            item.className = 'log-item';
+            item.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContent.appendChild(item);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        async function clearCaches() {
+            log('🗑️ Starting cache clear...');
+            
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                log(`Found ${cacheNames.length} caches`);
+                for (const name of cacheNames) {
+                    await caches.delete(name);
+                    log(`✓ Deleted cache: ${name}`);
+                }
+            }
+            
+            log('✅ All caches cleared');
+        }
+
+        function clearStorage() {
+            log('🗑️ Clearing storage...');
+            
+            // Don't clear auth data
+            const auth = localStorage.getItem('isAuthenticated');
+            const role = localStorage.getItem('userRole');
+            
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Restore auth
+            if (auth) localStorage.setItem('isAuthenticated', auth);
+            if (role) localStorage.setItem('userRole', role);
+            
+            log('✅ Storage cleared (auth preserved)');
+        }
+
+        async function clearEverything() {
+            log('🔥 NUCLEAR CLEAR INITIATED');
+            
+            await clearCaches();
+            clearStorage();
+            
+            // Clear service workers
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (const registration of registrations) {
+                    await registration.unregister();
+                    log('✓ Unregistered service worker');
+                }
+            }
+            
+            log('💥 NUCLEAR CLEAR COMPLETE');
+            log('⏱️ Redirecting in 2 seconds...');
+            
+            setTimeout(() => {
+                window.location.href = '/pharmacy/dashboard/order-requests';
+            }, 2000);
+        }
+
+        function goToDashboard() {
+            log('🚀 Navigating to dashboard...');
+            window.location.href = '/pharmacy/dashboard/order-requests';
+        }
+
+        function goToDashboardNewTab() {
+            log('🚀 Opening dashboard in new tab...');
+            window.open('/pharmacy/dashboard/order-requests', '_blank');
+        }
+
+        function showBrowserInfo() {
+            log('📊 Browser Information:');
+            log(`- User Agent: ${navigator.userAgent}`);
+            log(`- Platform: ${navigator.platform}`);
+            log(`- Language: ${navigator.language}`);
+            log(`- Online: ${navigator.onLine}`);
+            log(`- Cookies Enabled: ${navigator.cookieEnabled}`);
+            log(`- Viewport: ${window.innerWidth}x${window.innerHeight}`);
+            log(`- Screen: ${screen.width}x${screen.height}`);
+            log(`- Device Pixel Ratio: ${window.devicePixelRatio}`);
+            
+            // Check for CSS filter support
+            const testDiv = document.createElement('div');
+            testDiv.style.filter = 'blur(10px)';
+            const supportsFilter = testDiv.style.filter === 'blur(10px)';
+            log(`- CSS filter support: ${supportsFilter ? 'YES' : 'NO'}`);
+            
+            testDiv.style.backdropFilter = 'blur(10px)';
+            const supportsBackdrop = testDiv.style.backdropFilter === 'blur(10px)';
+            log(`- CSS backdrop-filter support: ${supportsBackdrop ? 'YES' : 'NO'}`);
+        }
+    </script>
+</body>
+</html>

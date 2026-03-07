@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Gemini Chat</title>
+</head>
+<body>
+    <h1>Test Gemini AI Chat</h1>
+    <button onclick="testChat()">Test Chat Session</button>
+    <button onclick="testDirectAPI()">Test Direct API</button>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from 'https://esm.run/@google/generative-ai';
+
+        const API_KEY = 'AIzaSyDiM-LdofEyQXdoacAYjeLpGJT-UhNBmO8';
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        window.testChat = async function() {
+            const output = document.getElementById('output');
+            output.textContent = 'Testing chat session...\n';
+
+            try {
+                const model = genAI.getGenerativeModel({
+                    model: "gemini-2.5-flash",
+                    safetySettings: [
+                        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+                    ],
+                });
+
+                const chat = model.startChat({
+                    generationConfig: {
+                        temperature: 0.8,
+                        topP: 0.95,
+                        topK: 40,
+                        maxOutputTokens: 2048,
+                    },
+                    history: [
+                        {
+                            role: "user",
+                            parts: [{ text: "You are a medical assistant. Provide helpful advice." }],
+                        },
+                        {
+                            role: "model",
+                            parts: [{ text: "I understand. I will provide helpful medical guidance." }],
+                        },
+                    ],
+                });
+
+                output.textContent += 'Chat session created. Sending message...\n';
+
+                const result = await chat.sendMessage("मुझे सिरदर्द है (कृपया हिंदी में जवाब दें)");
+                
+                output.textContent += '\n✅ SUCCESS!\n\n';
+                output.textContent += 'Response:\n' + result.response.text();
+            } catch (error) {
+                output.textContent += '\n❌ ERROR:\n' + error.message + '\n\n';
+                output.textContent += JSON.stringify(error, null, 2);
+            }
+        };
+
+        window.testDirectAPI = async function() {
+            const output = document.getElementById('output');
+            output.textContent = 'Testing direct API call...\n';
+
+            try {
+                const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+                const result = await model.generateContent("मुझे सिरदर्द है");
+                
+                output.textContent += '\n✅ SUCCESS!\n\n';
+                output.textContent += 'Response:\n' + result.response.text();
+            } catch (error) {
+                output.textContent += '\n❌ ERROR:\n' + error.message + '\n\n';
+                output.textContent += JSON.stringify(error, null, 2);
+            }
+        };
+    </script>
+</body>
+</html>

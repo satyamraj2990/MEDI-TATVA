@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MediTatva - Find Your Medicines Instantly</title>
+    <meta name="description" content="AI-powered local medicine finder. Connect with nearby pharmacies, check live stock availability, and get instant medicine recommendations." />
+    <meta name="author" content="MediTatva" />
+
+    <meta property="og:title" content="MediTatva - Find Your Medicines Instantly" />
+    <meta property="og:description" content="AI-powered local medicine finder. Connect with nearby pharmacies, check live stock availability, and get instant medicine recommendations." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@meditatva" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- Favicon - MediTatva Logo -->
+    <link rel="icon" type="image/png" href="/meditatva-logo.png?v=3" />
+    <link rel="alternate icon" href="/favicon.ico?v=3" />
+    <link rel="apple-touch-icon" href="/meditatva-logo.png?v=3" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  </head>
+
+  <body>
+    <div id="root">
+      <!-- Instant loading indicator - shown before React loads -->
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        z-index: 9999;
+      ">
+        <div style="text-align: center;">
+          <div style="
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(6, 182, 212, 0.2);
+            border-top-color: #06b6d4;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+          "></div>
+          <p style="
+            color: #94a3b8;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          ">Loading MediTatva...</p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      </style>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

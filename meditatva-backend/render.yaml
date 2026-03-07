@@ -1,0 +1,35 @@
+{
+  "$schema": "https://render.com/schema/v1",
+  "services": [
+    {
+      "type": "web",
+      "name": "meditatva-backend",
+      "env": "node",
+      "region": "oregon",
+      "plan": "free",
+      "buildCommand": "npm install",
+      "startCommand": "npm start",
+      "healthCheckPath": "/health",
+      "envVars": [
+        {
+          "key": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "key": "PORT",
+          "value": "3000"
+        },
+        {
+          "key": "MONGODB_URI",
+          "generateValue": true,
+          "description": "MongoDB connection string"
+        },
+        {
+          "key": "FRONTEND_URL",
+          "generateValue": true,
+          "description": "Your Vercel frontend URL"
+        }
+      ]
+    }
+  ]
+}

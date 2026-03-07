@@ -1,0 +1,767 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Theme Variables - Light and Dark Mode Support */
+@layer base {
+  :root {
+    /* Light Theme - Default */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Medical-grade primary: blue to turquoise */
+    --primary: 199 89% 48%; /* Medical blue */
+    --primary-light: 184 77% 52%; /* Turquoise */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary gradient: teal to cyan */
+    --secondary: 174 72% 52%; /* Teal */
+    --secondary-light: 189 85% 58%; /* Cyan */
+    --secondary-foreground: 0 0% 100%;
+
+    /* Accent gradient: pink to coral */
+    --accent: 349 100% 73%;
+    --accent-light: 338 100% 75%;
+    --accent-foreground: 0 0% 100%;
+
+    --muted: 221 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 221 30% 90%;
+    --input: 221 30% 90%;
+    --ring: 199 89% 48%;
+
+    --radius: 1rem;
+
+    /* Extended Light Theme Variables */
+    --bg-primary: 0 0% 100%; /* White */
+    --bg-secondary: 220 14% 96%; /* Light gray */
+    --bg-tertiary: 220 14% 98%; /* Ultra light */
+    
+    --text-primary: 222 47% 11%; /* Dark blue-gray */
+    --text-secondary: 215 16% 47%; /* Medium gray */
+    --text-muted: 220 9% 65%; /* Light gray */
+    
+    --border-light: 220 13% 91%; /* Very light border */
+    --border-medium: 220 13% 85%; /* Medium border */
+    --border-dark: 220 13% 75%; /* Darker border */
+    
+    /* Glass effect - Light */
+    --glass-bg: rgba(255, 255, 255, 0.90);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    
+    /* Shadows - Light */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --shadow-glow: 0 0 32px rgba(6, 182, 212, 0.15);
+    
+    /* Navigation & Sidebar */
+    --sidebar-bg: 0 0% 100%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-hover: 220 14% 96%;
+    --sidebar-active: 199 89% 48%;
+    
+    /* Input Elements */
+    --input-bg: 0 0% 100%;
+    --input-border: 220 13% 85%;
+    --input-focus: 199 89% 48%;
+    --input-text: 222 47% 11%;
+    --input-placeholder: 220 9% 65%;
+    
+    /* Buttons */
+    --btn-primary-bg: 199 89% 48%;
+    --btn-primary-hover: 199 89% 42%;
+    --btn-secondary-bg: 220 14% 96%;
+    --btn-secondary-hover: 220 14% 90%;
+    
+    /* Cards & Surfaces */
+    --surface-1: 0 0% 100%;
+    --surface-2: 220 14% 98%;
+    --surface-3: 220 14% 96%;
+  }
+
+  .dark {
+    /* Dark Theme - Premium Professional */
+    --background: 222 47% 11%; /* Rich dark blue-gray */
+    --foreground: 0 0% 98%; /* Pure white text */
+
+    --card: 220 22% 16%; /* Elevated dark cards */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 26% 14%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Electric medical blue - vibrant for dark */
+    --primary: 199 95% 65%; /* Electric blue */
+    --primary-light: 184 85% 70%; /* Bright turquoise */
+    --primary-foreground: 0 0% 100%;
+
+    /* Vibrant teal */
+    --secondary: 174 78% 65%;
+    --secondary-light: 189 90% 70%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Hot pink accent */
+    --accent: 330 85% 65%;
+    --accent-light: 320 80% 70%;
+    --accent-foreground: 0 0% 100%;
+
+    --muted: 220 20% 22%;
+    --muted-foreground: 220 10% 70%;
+
+    --destructive: 0 90% 65%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 18% 24%;
+    --input: 220 22% 18%;
+    --ring: 199 95% 65%;
+
+    /* Extended Dark Theme Variables */
+    --bg-primary: 222 47% 11%; /* Deep slate */
+    --bg-secondary: 220 22% 16%; /* Elevated surface */
+    --bg-tertiary: 220 22% 20%; /* Higher surface */
+    
+    --text-primary: 0 0% 98%; /* White */
+    --text-secondary: 220 10% 70%; /* Light gray-blue */
+    --text-muted: 220 9% 55%; /* Medium gray */
+    
+    --border-light: 220 18% 24%; /* Subtle dark border */
+    --border-medium: 220 18% 28%; /* Medium dark border */
+    --border-dark: 220 18% 35%; /* Lighter dark border */
+    
+    /* Glass effect - Dark */
+    --glass-bg: rgba(30, 41, 59, 0.80);
+    --glass-border: rgba(99, 179, 237, 0.15);
+    
+    /* Shadows - Dark with glow */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.40);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.50);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.60);
+    --shadow-glow: 0 0 40px rgba(99, 179, 237, 0.25);
+    
+    /* Navigation & Sidebar */
+    --sidebar-bg: 220 22% 16%;
+    --sidebar-border: 220 18% 24%;
+    --sidebar-hover: 220 22% 20%;
+    --sidebar-active: 199 95% 65%;
+    
+    /* Input Elements */
+    --input-bg: 220 22% 18%;
+    --input-border: 220 18% 28%;
+    --input-focus: 199 95% 65%;
+    --input-text: 0 0% 98%;
+    --input-placeholder: 220 9% 55%;
+    
+    /* Buttons */
+    --btn-primary-bg: 199 95% 65%;
+    --btn-primary-hover: 199 95% 70%;
+    --btn-secondary-bg: 220 22% 20%;
+    --btn-secondary-hover: 220 22% 24%;
+    
+    /* Cards & Surfaces */
+    --surface-1: 220 22% 16%;
+    --surface-2: 220 22% 18%;
+    --surface-3: 220 22% 20%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply bg-background;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Poppins', 'Inter', sans-serif;
+    min-height: 100vh;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #root {
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+  }
+  
+  /* Smooth theme transition for all elements */
+  * {
+    transition-property: background-color, border-color, color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/85 backdrop-blur-xl border border-white/30 shadow-lg;
+  }
+  
+  /* Dark mode glass card enhancement */
+  .dark .glass-card {
+    background: rgba(35, 45, 65, 0.75);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(96, 165, 250, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(96, 165, 250, 0.08) inset;
+  }
+
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(199 89% 48%), hsl(184 77% 52%));
+  }
+  
+  .dark .gradient-primary {
+    background: linear-gradient(135deg, hsl(199 95% 65%), hsl(184 85% 70%));
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+  }
+
+  .gradient-secondary {
+    background: linear-gradient(135deg, hsl(174 72% 52%), hsl(189 85% 58%));
+  }
+  
+  .dark .gradient-secondary {
+    background: linear-gradient(135deg, hsl(174 78% 65%), hsl(189 90% 70%));
+    box-shadow: 0 4px 20px rgba(45, 212, 191, 0.3);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, hsl(349 100% 73%), hsl(338 100% 75%));
+  }
+  
+  .dark .gradient-accent {
+    background: linear-gradient(135deg, hsl(330 85% 65%), hsl(320 80% 70%));
+    box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(199 89% 48%), hsl(184 77% 52%));
+  }
+  
+  .dark .gradient-text {
+    background-image: linear-gradient(135deg, hsl(199 95% 70%), hsl(184 85% 75%));
+  }
+
+  /* Hero gradient background - theme aware */
+  .hero-gradient {
+    background: linear-gradient(135deg, rgba(27, 108, 168, 0.9), rgba(30, 170, 231, 0.8));
+  }
+  
+  .dark .hero-gradient {
+    background: linear-gradient(135deg, hsl(220 40% 12%), hsl(199 50% 18%));
+    box-shadow: 0 0 100px rgba(56, 189, 248, 0.1) inset;
+  }
+
+  /* Login page gradient - theme aware */
+  .login-gradient {
+    background: linear-gradient(135deg, hsl(199 89% 48%), hsl(184 77% 52%));
+  }
+  
+  .dark .login-gradient {
+    background: linear-gradient(135deg, hsl(220 35% 15%), hsl(199 45% 20%));
+  }
+
+  /* Premium Login Page Styles */
+  .premium-login-gradient {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #49a09d 100%);
+    background-size: 400% 400%;
+    animation: premium-gradient 15s ease infinite;
+  }
+
+  .dark .premium-login-gradient {
+    background: linear-gradient(135deg, #1e2530 0%, #2a3f5f 50%, #1a2332 100%);
+    background-size: 400% 400%;
+    animation: premium-gradient 15s ease infinite;
+  }
+
+  @keyframes premium-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .premium-glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+
+  .dark .premium-glass-card {
+    background: rgba(35, 45, 65, 0.7);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(96, 165, 250, 0.1) inset,
+                0 0 50px rgba(56, 189, 248, 0.05);
+  }
+
+  .premium-gradient-text {
+    background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: shine 3s linear infinite;
+  }
+
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+
+  .premium-tab-indicator {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4);
+  }
+
+  .dark .premium-tab-indicator {
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+  }
+
+  .premium-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .premium-input:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(167, 139, 250, 0.5);
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1),
+                0 0 20px rgba(167, 139, 250, 0.2);
+  }
+
+  .dark .premium-input {
+    background: rgba(35, 45, 65, 0.6);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+  }
+
+  .dark .premium-input:focus {
+    background: rgba(45, 55, 75, 0.8);
+    border-color: rgba(96, 165, 250, 0.6);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15),
+                0 0 20px rgba(56, 189, 248, 0.3);
+  }
+
+  .premium-button {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    box-shadow: 0 10px 25px rgba(106, 17, 203, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .premium-button:hover {
+    box-shadow: 0 15px 35px rgba(106, 17, 203, 0.4),
+                0 5px 15px rgba(37, 117, 252, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .premium-button:active {
+    transform: translateY(0);
+  }
+
+  .dark .premium-button {
+    background: linear-gradient(135deg, #60a5fa, #38bdf8);
+    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4);
+  }
+
+  .dark .premium-button:hover {
+    background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+    box-shadow: 0 15px 40px rgba(56, 189, 248, 0.5),
+                0 5px 20px rgba(14, 165, 233, 0.4);
+  }
+
+  /* Responsive adjustments for landscape login */
+  @media (max-width: 1024px) {
+    .premium-glass-card .grid {
+      grid-template-columns: 1fr !important;
+    }
+    
+    .premium-glass-card .lg\:grid-cols-2 > div:first-child {
+      min-height: auto !important;
+      padding: 2rem !important;
+    }
+  }
+
+  /* Premium Homepage Styles */
+  .premium-hero-gradient {
+    background: linear-gradient(135deg, 
+      hsl(220, 80%, 95%) 0%, 
+      hsl(200, 85%, 92%) 25%,
+      hsl(180, 80%, 90%) 50%,
+      hsl(200, 85%, 92%) 75%,
+      hsl(220, 80%, 95%) 100%);
+    background-size: 400% 400%;
+    animation: premium-gradient 20s ease infinite;
+  }
+
+  .dark .premium-hero-gradient {
+    background: linear-gradient(135deg, 
+      hsl(220, 40%, 12%) 0%, 
+      hsl(210, 50%, 16%) 25%,
+      hsl(199, 45%, 18%) 50%,
+      hsl(210, 50%, 16%) 75%,
+      hsl(220, 40%, 12%) 100%);
+    background-size: 400% 400%;
+    animation: premium-gradient 20s ease infinite;
+  }
+
+  .premium-hero-text {
+    background: linear-gradient(135deg, 
+      #3b82f6 0%, 
+      #06b6d4 25%, 
+      #8b5cf6 50%, 
+      #06b6d4 75%, 
+      #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% auto;
+    animation: shine-text 8s linear infinite;
+  }
+
+  @keyframes shine-text {
+    to {
+      background-position: 300% center;
+    }
+  }
+
+  .premium-hero-button {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .premium-hero-button:hover {
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-2px);
+  }
+
+  .premium-hero-button-secondary {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .premium-hero-button-secondary:hover {
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-2px);
+  }
+
+  .premium-feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    transition: all 0.3s ease;
+  }
+
+  .premium-feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+
+  .dark .premium-feature-card {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .premium-cta-card {
+    background: linear-gradient(135deg, 
+      rgba(59, 130, 246, 0.1), 
+      rgba(168, 85, 247, 0.1), 
+      rgba(6, 182, 212, 0.1));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #3b82f6, #a855f7, #06b6d4) 1;
+    box-shadow: 0 30px 80px rgba(59, 130, 246, 0.2),
+                0 0 100px rgba(168, 85, 247, 0.15) inset;
+  }
+
+  .dark .premium-cta-card {
+    background: linear-gradient(135deg, 
+      rgba(59, 130, 246, 0.05), 
+      rgba(168, 85, 247, 0.05), 
+      rgba(6, 182, 212, 0.05));
+  }
+
+  .premium-cta-button {
+    background: linear-gradient(135deg, #3b82f6, #a855f7, #06b6d4);
+    background-size: 200% auto;
+    box-shadow: 0 15px 50px rgba(59, 130, 246, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    transition: all 0.3s ease;
+    animation: neon-glow 3s ease-in-out infinite;
+  }
+
+  .premium-cta-button:hover {
+    background-position: right center;
+    box-shadow: 0 20px 70px rgba(59, 130, 246, 0.6),
+                0 0 40px rgba(168, 85, 247, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+    transform: translateY(-3px);
+  }
+
+  @keyframes neon-glow {
+    0%, 100% {
+      box-shadow: 0 15px 50px rgba(59, 130, 246, 0.4),
+                  0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    }
+    50% {
+      box-shadow: 0 15px 50px rgba(168, 85, 247, 0.5),
+                  0 0 20px rgba(6, 182, 212, 0.3),
+                  0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    }
+  }
+
+
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary to-primary-light text-white font-semibold rounded-full px-6 py-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+  
+  /* Enhanced dark mode card hover */
+  .dark .card-hover:hover {
+    box-shadow: 0 20px 60px rgba(147, 51, 234, 0.25);
+  }
+}
+
+@layer utilities {
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Custom Scrollbar Styles */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #93C5FD, #60A5FA);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #60A5FA, #3B82F6);
+  }
+
+  /* Firefox scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #93C5FD transparent;
+  }
+
+  /* Mobile Optimizations */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent text selection on interactive elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Smooth animations with reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Mobile-friendly focus states */
+  @media (max-width: 768px) {
+    *:focus-visible {
+      outline: 2px solid hsl(var(--primary));
+      outline-offset: 2px;
+    }
+  }
+
+  /* Prevent layout shift during loading */
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Hardware acceleration for animations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  /* Safe area insets for notched devices */
+  @supports (padding: env(safe-area-inset-top)) {
+    .safe-top {
+      padding-top: env(safe-area-inset-top);
+    }
+    
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    .safe-left {
+      padding-left: env(safe-area-inset-left);
+    }
+    
+    .safe-right {
+      padding-right: env(safe-area-inset-right);
+    }
+  }
+
+  /* Optimize animations for mobile performance */
+  @media (max-width: 768px) {
+    .animate-float,
+    .animate-gradient {
+      animation-duration: 6s; /* Slower animations on mobile */
+    }
+  }
+
+  /* Better text rendering on mobile */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Prevent zoom on input focus (iOS) */
+  @media screen and (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="search"],
+    textarea,
+    select {
+      font-size: 16px !important; /* Prevents iOS zoom */
+    }
+  }
+
+  /* Hide scrollbar during transitions */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Custom scrollbar for pharmacy dashboard */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(27, 108, 168, 0.05);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(27, 108, 168, 0.3);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(27, 108, 168, 0.5);
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(27, 108, 168, 0.3) rgba(27, 108, 168, 0.05);
+  }
+
+  /* CRITICAL: Ensure all input fields are always interactive */
+  input,
+  textarea,
+  select,
+  button {
+    pointer-events: auto !important;
+  }
+
+  input:not([readonly]):not([disabled]),
+  textarea:not([readonly]):not([disabled]) {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+  }
+}
+

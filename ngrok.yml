@@ -1,0 +1,7 @@
+version: "2"
+authtoken: 38tV1V8UqsIoAl2EcHkElEcw2CX_3LKRCMxuXR3eQntP3xQmn
+tunnels:
+  meditatva:
+    proto: http
+    addr: 5000
+    inspect: true

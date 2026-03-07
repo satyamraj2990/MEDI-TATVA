@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Location Test</title>
+</head>
+<body>
+    <h1>Location Detection Test</h1>
+    <button onclick="getLocation()">Get My Location</button>
+    <div id="output"></div>
+    <script>
+        function getLocation() {
+            const output = document.getElementById('output');
+            output.innerHTML = 'Getting location...';
+            
+            if (!navigator.geolocation) {
+                output.innerHTML = 'Geolocation not supported';
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const accuracy = position.coords.accuracy;
+                    
+                    output.innerHTML = `
+                        <h2>GPS Coordinates:</h2>
+                        <p><strong>Latitude:</strong> ${lat}</p>
+                        <p><strong>Longitude:</strong> ${lon}</p>
+                        <p><strong>Accuracy:</strong> ${accuracy} meters</p>
+                        <p>Fetching address...</p>
+                    `;
+                    
+                    // Test Nominatim
+                    try {
+                        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
+                        const response = await fetch(url, {
+                            headers: { 'User-Agent': 'MediTatva-Test' }
+                        });
+                        const data = await response.json();
+                        
+                        output.innerHTML += `
+                            <h2>Nominatim Response:</h2>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        `;
+                    } catch (error) {
+                        output.innerHTML += `<p>Error: ${error.message}</p>`;
+                    }
+                },
+                (error) => {
+                    output.innerHTML = `Error: ${error.message}`;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        }
+    </script>
+</body>
+</html>
