@@ -158,7 +158,10 @@
     </div>
 
     <script>
-        const API_KEY = 'AIzaSyDuoNumShHjBgzKfRfLpyK_Iw-yodzhmY8';
+        const API_KEY = prompt('Enter your Google Vision API Key:') || '';
+        if (!API_KEY) {
+            document.getElementById('log').innerHTML = '<p style="color: red;">Error: No API key provided</p>';
+        }
         const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
         let checkCount = 0;
         let startTime = Date.now();

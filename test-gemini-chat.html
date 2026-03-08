@@ -12,7 +12,11 @@
     <script type="module">
         import { GoogleGenerativeAI } from 'https://esm.run/@google/generative-ai';
 
-        const API_KEY = 'AIzaSyDiM-LdofEyQXdoacAYjeLpGJT-UhNBmO8';
+        const API_KEY = prompt('Enter your Gemini API Key:') || '';
+        if (!API_KEY) {
+            document.getElementById('output').textContent = 'Error: No API key provided';
+            return;
+        }
         const genAI = new GoogleGenerativeAI(API_KEY);
 
         window.testChat = async function() {

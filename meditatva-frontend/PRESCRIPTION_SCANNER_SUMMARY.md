@@ -58,7 +58,7 @@ When API fails, users see realistic sample data:
 #### 1. `/meditatva-frontend/.env`
 ```env
 VITE_GEMINI_API_KEY=your_gemini_api_key_here
-VITE_GOOGLE_VISION_API_KEY=AIzaSyCI6cUhvB6l7oI1zp1uh7D7FF_bQjzopCo
+VITE_GOOGLE_VISION_API_KEY=your_google_vision_api_key_here
 VITE_API_URL=http://localhost:3000/api
 ```
 **Purpose**: Environment variables for API keys  

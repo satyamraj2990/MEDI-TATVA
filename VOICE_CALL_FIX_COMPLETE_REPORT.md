@@ -13,7 +13,7 @@
 
 ```javascript
 // ❌ OLD CODE (Line ~1605)
-const apiKey = 'AIzaSyBc90-7_xrAyq0eqEI_R-qxPh98UuuM3Pc';
+const apiKey = 'YOUR_OLD_HARDCODED_KEY'; // SECURITY RISK!
 ```
 
 **Impact:**

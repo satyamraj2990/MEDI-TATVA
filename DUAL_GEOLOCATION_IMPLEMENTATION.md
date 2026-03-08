@@ -10,13 +10,13 @@ Successfully implemented **two independent geolocation modules** for Patient and
 
 ### Patient Dashboard API Key
 ```
-AIzaSyBNNB_456wwnLo57BSO89POATwS1FjsMjw
+YOUR_PATIENT_GOOGLE_MAPS_API_KEY
 ```
 **Used by:** `usePatientGeolocation` hook
 
 ### Pharmacy Dashboard API Key
 ```
-AIzaSyCes8Tpt5kvG7b-D8C3eGw_5L0x8-v_dZA
+YOUR_PHARMACY_GOOGLE_MAPS_API_KEY
 ```
 **Used by:** `usePharmacyGeolocation` hook
 
@@ -141,12 +141,12 @@ sessionStorage.pharmacyLocationData = {
 
 **Patient Dashboard Geocoding:**
 ```typescript
-const googleUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBNNB_456wwnLo57BSO89POATwS1FjsMjw`;
+const googleUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${YOUR_PATIENT_API_KEY}`;
 ```
 
 **Pharmacy Dashboard Geocoding:**
 ```typescript
-const googleUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyCes8Tpt5kvG7b-D8C3eGw_5L0x8-v_dZA`;
+const googleUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${YOUR_PHARMACY_API_KEY}`;
 ```
 
 ### ✅ Location Display Format

@@ -284,7 +284,7 @@ Every AI response follows this structure:
 cat /workspaces/meditatva-connect-ai/meditatva-frontend/.env
 
 # Should show:
-VITE_GEMINI_API_KEY="AIzaSyD_XHd1xi20Y-IgccbT8SpdxxYfFf2CaUc"
+VITE_GEMINI_API_KEY="YOUR_ACTUAL_GEMINI_API_KEY"
 
 # Restart dev server
 npm run dev

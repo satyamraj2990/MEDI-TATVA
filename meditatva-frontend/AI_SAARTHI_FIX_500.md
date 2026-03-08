@@ -21,7 +21,7 @@ The Gemini AI API key is either missing or invalid in your environment configura
 2. Find the line: `VITE_GEMINI_API_KEY=your_placeholder_here`
 3. Replace with your actual key:
    ```
-   VITE_GEMINI_API_KEY=AIzaSyD_XHd1xi20Y-IgccbT8SpdxxYfFf2CaUc
+   VITE_GEMINI_API_KEY=YOUR_ACTUAL_GEMINI_API_KEY
    ```
 4. Save the file
 
@@ -91,12 +91,12 @@ Look for:
 
 ## 📝 Current API Key
 
-Your `.env` file currently has:
+Your `.env` file should have:
 ```
-VITE_GEMINI_API_KEY=AIzaSyD_XHd1xi20Y-IgccbT8SpdxxYfFf2CaUc
+VITE_GEMINI_API_KEY=YOUR_ACTUAL_GEMINI_API_KEY_HERE
 ```
 
-If this is still a placeholder, replace it with your own key from Google.
+Get your API key from Google AI Studio.
 
 ## 🎯 Expected Behavior After Fix
 

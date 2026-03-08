@@ -42,7 +42,7 @@ nano .env
 
 Replace the line:
 ```
-GEMINI_API_KEY=AIzaSyCZyfKzkfVZ0KNoqSShIwnNpXkKk00tjd8
+GEMINI_API_KEY=YOUR_OLD_KEY_HERE
 ```
 
 With:
@@ -138,8 +138,8 @@ curl -X POST http://localhost:5000/api/voice-call/process-speech \
 | Twilio Config | ✅ Valid | +18136869485 |
 | Ngrok URL | ✅ Active | https://simperingly-unconniving-derek.ngrok-free.dev |
 | Gemini Model | ✅ Fixed | gemini-2.0-flash (correct) |
-| API Key (Backend) | ❌ No Quota | AIzaSyCZyf... (exhausted) |
-| API Key (Frontend) | ❌ No Quota | AIzaSyDiM-... (exhausted) |
+| API Key (Backend) | ❌ No Quota | [REDACTED] (exhausted) |
+| API Key (Frontend) | ❌ No Quota | [REDACTED] (exhausted) |
 
 ---
 

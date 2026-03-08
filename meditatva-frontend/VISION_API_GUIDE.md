@@ -12,9 +12,9 @@ The Prescription Scanner uses **Google Cloud Vision API** to analyze prescriptio
 
 ### Environment Setup
 
-1. **API Key**: Your Google Vision API key is already configured in `.env`:
+1. **API Key**: Your Google Vision API key should be configured in `.env`:
    ```env
-   VITE_GOOGLE_VISION_API_KEY=AIzaSyCI6cUhvB6l7oI1zp1uh7D7FF_bQjzopCo
+   VITE_GOOGLE_VISION_API_KEY=YOUR_GOOGLE_VISION_API_KEY
    ```
 
 2. **Security**: The `.env` file is excluded from git via `.gitignore`

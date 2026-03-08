@@ -64,7 +64,7 @@ Image size (base64): XXXXX characters
    ```bash
    cat /workspaces/meditatva-connect-ai/meditatva-frontend/.env
    ```
-   Should show: `VITE_GOOGLE_VISION_API_KEY=AIzaSyCI6cUhvB6l7oI1zp1uh7D7FF_bQjzopCo`
+   Should show: `VITE_GOOGLE_VISION_API_KEY=YOUR_ACTUAL_API_KEY`
 
 4. **Verify Vision API is Enabled**
    - Go to: https://console.cloud.google.com/apis/library/vision.googleapis.com
@@ -116,7 +116,7 @@ npm run dev
 ### Test API Key Manually:
 ```bash
 curl -X POST \
-  "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCI6cUhvB6l7oI1zp1uh7D7FF_bQjzopCo" \
+  "https://vision.googleapis.com/v1/images:annotate?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "requests": [{
@@ -187,4 +187,4 @@ If still not working after following this guide:
 ---
 
 **Current Status**: Fixed syntax errors, added comprehensive logging, .env configured
-**API Key**: AIzaSyCI6cUhvB6l7oI1zp1uh7D7FF_bQjzopCo (visible in console logs for debugging)
+**API Key**: Configured via environment variable (refer to .env.example)

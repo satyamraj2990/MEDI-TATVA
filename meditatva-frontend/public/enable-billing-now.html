@@ -272,7 +272,11 @@
             btn.textContent = '🔄 Checking...';
             
             try {
-                const response = await fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDuoNumShHjBgzKfRfLpyK_Iw-yodzhmY8', {
+                const apiKey = prompt('Enter your Google Vision API Key:') || '';
+                if (!apiKey) {
+                    throw new Error('No API key provided');
+                }
+                const response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

@@ -21,7 +21,7 @@ async function getGeminiMedicalResponse(userMessage, conversationHistory = [], s
     console.log('🔄 Last response (for anti-loop check):', lastResponse.substring(0, 80) + '...');
   }
   
-  const apiKey = 'AIzaSyBc90-7_xrAyq0eqEI_R-qxPh98UuuM3Pc';
+  const apiKey = process.env.GEMINI_API_KEY || '';
   let aiResponse = null;
   let attempt = 0;
   const MAX_ATTEMPTS = 2;
